@@ -1,75 +1,71 @@
-#include "include/cypher.h" // Include Vigenère cipher function declarations
-#include <stdio.h>            // For input/output (printf)
-#include <string.h>           // For string functions like strcmp and strncpy
+#include "include/cypher.h" 
+#include <stdio.h>         
+#include <string.h>         
 
-int main(int argc, char *argv[]) { // Program entry point; argc = argument
-                                   // count, argv = argument values
-  if (argc < 4) {                  // If too few arguments were givendn
-    printf("Usage:\n");            // Print usage instructions
+int main(int argc, char *argv[]){ 
+  if (argc < 4) {              
+    printf("Usage:\n");     
     printf("  %s caesar   <encrypt|decrypt> <message>\n",
-           argv[0]); // Example for Caesar
+           argv[0]); 
     printf("  %s vigenere <encrypt|decrypt> <message> <key>\n",
-           argv[0]); // Example for Vigenère
-    return 1;        // Exit with error code 1
+           argv[0]); 
+    return 1;  
   }
+  char *cypher = argv[1];  
+  char *type = argv[2];  
+  char *message = argv[3];
+  char msgRam[150];     
 
-  char *cipher = argv[1];  // The first argument after the program name (which cipher to use)
-  char *mode = argv[2];    // The second argument (encrypt or decrypt)
-  char *message = argv[3]; // The third argument (the text to process)
-  char msgRam[150];        // Buffer to store a copy of the message
+  strncpy(msgRam, message, sizeof(msgRam));  
+  msgRam[sizeof(msgRam) - 1] = '\0';        
 
-  strncpy(msgRam, message, sizeof(msgRam)); // Copy message safely into buffer
-  msgRam[sizeof(msgRam) - 1] = '\0';        // Ensure string ends properly
+  if (strcmp(cypher, "caesar") == 0){ 
+    if (argc != 4) {
+      printf("ERROR use format: <caesar> <encrypt/decrypt> "
+             "<message>\n"); 
+      return 1;
+    }
+    if (strcmp(type, "encrypt") == 0){ 
+      caesarEncrypt(msgRam);   
+      printf("Encrypted message: %s\n", msgRam);
+      return 0;             
 
-  if (strcmp(cipher, "caesar") == 0) { // If the chosen cipher is "caesar"
-    if (argc != 4) { // Check correct number of arguments for Caesar
-      printf("Please use specified format: <caesar> <encrypt/decrypt> "
-             "<message>\n");
-      return 1; // Exit if incorrect usage
+    } else if (strcmp(type, "decrypt") == 0){
+      caesarDecrypt(msgRam);
+      printf("Decrypted message: %s\n", msgRam);
+      return 0;                            
+
+    } else {
+      printf("Select encrypt or decrypt\n");
+      return 1;                               
     }
 
-    if (strcmp(mode, "encrypt") == 0) { // If user chose encryption
-      caesarEncrypt(msgRam);           // Call Caesar encryption function
-      printf("Encrypted message: %s\n", msgRam); // Print the result
-      return 0;                                  // Exit successfully
-
-    } else if (strcmp(mode, "decrypt") == 0) { // If user chose decryption
-      caesarDecrypt(msgRam); // Call Caesar decryption function
-      printf("Decrypted message: %s\n", msgRam); // Print the result
-      return 0;                                  // Exit successfully
-
-    } else { // If mode is neither encrypt nor decrypt
-      printf("Please select encrypt or decrypt\n"); // Error message
-      return 1;                                     // Exit with error
-    }
-
-  } else if (strcmp(cipher, "vigenere") ==
-             0) {    // If chosen cipher is "vigenere"
-    if (argc != 5) { // Must include key argument
+  } else if (strcmp(cypher, "vigenere") ==0){   
+    if (argc != 5) { 
       printf("Please use specified format: <vigenere> <encrypt/decrypt> "
              "<message> <key>\n");
-      return 1; // Exit if incorrect usage
+      return 1;
     }
 
-    char *key = argv[4]; // Store the encryption key
+    char *key = argv[4]; 
 
-    if (strcmp(mode, "encrypt") == 0) { // If encrypt mode
-      vigenereEncrypt(msgRam, key);    // Call Vigenère encryption function
-      printf("Encrypted message: %s\n", msgRam); // Print encrypted text
-      return 0;                                  // Exit successfully
+    if (strcmp(type, "encrypt") == 0){
+      vigenereEncrypt(msgRam, key); 
+      printf("Encrypted message: %s\n", msgRam); 
+      return 0;
 
-    } else if (strcmp(mode, "decrypt") == 0) { // If decrypt mode
-      vigenereDecrypt(msgRam, key); // Call Vigenère decryption function
-      printf("Decrypted message: %s\n", msgRam); // Print decrypted text
-      return 0;                                  // Exit successfully
+    } else if (strcmp(type, "decrypt") == 0){
+      vigenereDecrypt(msgRam, key);
+      printf("Decrypted message: %s\n", msgRam);
+      return 0;
 
-    } else {                                        // Invalid mode
-      printf("Please select encrypt or decrypt\n"); // Error message
-      return 1;                                     // Exit with error
+    } else {
+      printf("select encrypt or decrypt\n");
+      return 1;
     }
 
   } else { 
-    printf("Invalid cipher (use 'caesar' or 'vigenere')\n"); // error message
+    printf("Invalid cypher use 'caesar' or 'vigenere'\n");
     return 1;                                                
   }
 }

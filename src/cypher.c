@@ -2,7 +2,7 @@
 #include <ctype.h>  
 #include <string.h>  
 
-void caesarEncrypt(char text[]) {
+void caesarEncrypt(char text[]){
   for (int i = 0; text[i] != '\0'; i++) {
     char character = text[i];            
     if (isalpha(character)) {
@@ -17,8 +17,8 @@ void caesarEncrypt(char text[]) {
   }
 }
 
-void caesarDecrypt(char text[]) {
-  for (int i = 0; text[i] != '\0'; i++) { 
+void caesarDecrypt(char text[]){
+  for (int i = 0; text[i] != '\0'; i++){ 
     char character = text[i];             
     if (isalpha(character)) { 
       int shift = 3;       
@@ -31,10 +31,10 @@ void caesarDecrypt(char text[]) {
   }
 }
 
-void vigenereEncrypt(char text[], char key[]) {
+void vigenereEncrypt(char text[], char key[]){
   int keyLength = strlen(key);
 
-  for (int i = 0, j = 0; text[i] != '\0'; i++) {
+  for (int i = 0, j = 0; text[i] != '\0'; i++){
     char character = text[i];
 
     if (isalpha(character)) {
@@ -51,10 +51,10 @@ void vigenereEncrypt(char text[], char key[]) {
   }
 }
 
-void vigenereDecrypt(char text[], char key[]) {
+void vigenereDecrypt(char text[], char key[]){
   int keyLength = strlen(key);
 
-  for (int i = 0, j = 0; text[i] != '\0'; i++) {
+  for (int i = 0, j = 0; text[i] != '\0'; i++){
     char character = text[i];
 
     if (isalpha(character)) {
